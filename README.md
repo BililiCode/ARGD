@@ -10,7 +10,7 @@ We have already uploaded the `all2one` pretrained backdoor student model(i.e. gr
 For evaluating the performance of  ARGD, you can easily run command:
 
 ```bash
-$ python main.py 
+$ python main-ARGD.py 
 ```
 where the default parameters are shown in `config.py`.
 
