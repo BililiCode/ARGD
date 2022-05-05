@@ -114,9 +114,9 @@ class ARGD(nn.Module):
     def __init__(self, opt):
         super(ARGD, self).__init__()
 
-        self.w_irg_vert = opt.w_irg_vert
-        self.w_irg_edge = opt.w_irg_edge
-        self.w_irg_tran = opt.w_irg_tran
+        self.w_argd_vert = opt.w_argd_vert
+        self.w_argd_edge = opt.w_argd_edge
+        self.w_argd_tran = opt.w_argd_tran
         self.margin = 1
         self.alpha = 0.1
         self.attention = Attention(opt)
