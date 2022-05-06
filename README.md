@@ -98,7 +98,9 @@ Backdoors 101 — is a PyTorch framework for state-of-the-art backdoor defenses 
 - [trojanzoo](https://github.com/ain-soph/trojanzoo)
 - [backdoors101](https://github.com/ebagdasa/backdoors101)
 
+## References
 
+If you find this code is useful for your research, please cite our paper.
 ## Contacts
 
 If you have any questions, leave a message below with GitHub.
