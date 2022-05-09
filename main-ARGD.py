@@ -29,7 +29,7 @@ def train_step(opt, train_loader, nets, optimizer, criterions, epoch):
     snet = nets['snet']
     tnet = nets['tnet']
 
-    ###criterion XX for KD algoriithm
+    ###criterion XX for distillation loss function
     criterionCls = criterions['criterionCls']
     criterionAT = criterions['criterionAT']
     criterionARGD = criterions['criterionARGD']
@@ -40,9 +40,7 @@ def train_step(opt, train_loader, nets, optimizer, criterions, epoch):
         if opt.cuda:
             img = img.cuda()
             target = target.cuda()
-        # x = img[0][0].cpu()
-        # plt.imshow(x, interpolation='bicubic')
-        # plt.show()
+
 
         activation1_s, activation2_s, activation3_s, feat_s, output_s = snet(img)
         with torch.no_grad():
