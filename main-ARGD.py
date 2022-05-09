@@ -63,11 +63,10 @@ def train_step(opt, train_loader, nets, optimizer, criterions, epoch):
         # at1_loss = criterionAT(activation1_s, activation1_t.detach()) * 5000
         # at_loss = at1_loss + at2_loss + at3_loss + cls_loss
         ####################################################
-        # adaptive factor to irg_loss to change this
 
         ###############################################
         '''
-        ARGD:
+        ARGD loss function
         '''
         ARG_loss = criterionARGD([activation1_s, activation2_s, activation3_s, feat_s, output_s],
                                 [activation1_t.detach(), activation2_t.detach(),
