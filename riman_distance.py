@@ -8,6 +8,7 @@ from at import AT
 import numpy as np
 import matplotlib.pyplot as plt
 
+##attention distillation
 
 class nn_bn_relu(nn.Module):
     def __init__(self, nin, nout):
@@ -33,6 +34,8 @@ class Attention(nn.Module):
         self.p_s = nn.Parameter(torch.Tensor(len(args.s_shapes), args.qk_dim)).to('cuda')
         torch.nn.init.xavier_normal_(self.p_t)
         torch.nn.init.xavier_normal_(self.p_s)
+        
+        
     def forward(self, g_s, g_t):
         bilinear_key, h_hat_s_all = self.linear_trans_s(g_s)
         query, h_t_all = self.linear_trans_t(g_t)
@@ -47,6 +50,8 @@ class Attention(nn.Module):
             diff = self.cal_diff(h_hat_s, h_t, atts[:, i])
             loss.append(diff)
         return loss
+    
+    
     def cal_diff(self, v_s, v_t, att):
         diff = (v_s - v_t.unsqueeze(1)).pow(2).mean(2)
         diff = torch.mul(diff, att).sum(1).mean()
@@ -56,9 +61,6 @@ class Attention(nn.Module):
 class LinearTransformTeacher(nn.Module):
     def __init__(self, args):
         super(LinearTransformTeacher, self).__init__()
-        '''
-        transfrom the teacher attention feature set to the embedding vector
-        '''
         self.query_layer = nn.ModuleList([nn_bn_relu(t_shape[0], args.qk_dim) for t_shape in args.t_shapes])
 
     def forward(self, g_t):
@@ -74,9 +76,6 @@ class LinearTransformTeacher(nn.Module):
 class LinearTransformStudent(nn.Module):
     def __init__(self, args):
         super(LinearTransformStudent, self).__init__()
-        '''
-        transfrom the student attention feature set to the embedding vector
-        '''
         self.t = len(args.t_shapes)
         self.s = len(args.s_shapes)
         self.qk_dim = args.qk_dim
@@ -84,7 +83,7 @@ class LinearTransformStudent(nn.Module):
         self.samplers = nn.ModuleList([Sample(t_shape) for t_shape in args.unique_t_shapes])  # channel_key+sample_key
 
         self.key_layer = nn.ModuleList([nn_bn_relu(s_shape[1], self.qk_dim) for s_shape in args.s_shapes]).cuda()
-        self.bilinear = nn_bn_relu(args.qk_dim, args.qk_dim * len(args.t_shapes))
+        self.bilinear = nn_bn_relu(args.qk_dim, args.qk_dim * len(args.t_shapes)) #bilinear get the vector embedding
 
     def forward(self, g_s):
         bs = g_s[0].size(0)
@@ -143,7 +142,7 @@ class ARGD(nn.Module):
         loss_global_list = self.attention(AT_s, AT_t)
         loss_global = 0
         for i in range(len(AT_s)):
-            loss_global += loss_global_list[i]
+            loss_global += loss_global_list[i]#embedding dis
         edg_tran_s2 = self.euclidean_dist_fms(fm_s0_attention, fm_s2_attention, squared=True)
 
         edg_tran_s1 = self.euclidean_dist_fms(fm_s1_attention, fm_s2_attention, squared=True)
@@ -155,7 +154,7 @@ class ARGD(nn.Module):
         edg_tran_t0 = self.euclidean_dist_fms(fm_t0_attention, fm_t1_attention, squared=True)
 
         loss_argd_edge = (F.mse_loss(edg_tran_s0, edg_tran_t0) + F.mse_loss(edg_tran_s1, edg_tran_t1) + F.mse_loss(
-            edg_tran_s2, edg_tran_t2)) / 3
+            edg_tran_s2, edg_tran_t2)) / 3 #edge dis
 
         loss = (
                 self.w_argd_vert * loss_argd_vert
