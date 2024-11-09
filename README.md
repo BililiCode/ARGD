@@ -101,6 +101,22 @@ Backdoors 101 — is a PyTorch framework for state-of-the-art backdoor defenses 
 ## References
 
 If you find this code is useful for your research, please cite our paper.
+
+@inproceedings{ijcai2022p206,
+  title     = {Eliminating Backdoor Triggers for Deep Neural Networks Using  Attention Relation Graph Distillation},
+  author    = {Xia, Jun and Wang, Ting and Ding, Jiepin and Wei, Xian and Chen, Mingsong},
+  booktitle = {Proceedings of the Thirty-First International Joint Conference on
+               Artificial Intelligence, {IJCAI-22}},
+  publisher = {International Joint Conferences on Artificial Intelligence Organization},
+  editor    = {Lud De Raedt},
+  pages     = {1481--1487},
+  year      = {2022},
+  month     = {7},
+  note      = {Main Track},
+  doi       = {10.24963/ijcai.2022/206},
+  url       = {https://doi.org/10.24963/ijcai.2022/206},
+}
+
 ## Contacts
 
 If you have any questions, leave a message below with GitHub.
